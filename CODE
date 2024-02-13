@@ -1,0 +1,81 @@
+import java.util.Scanner;
+
+class OnlineReservationSystem {
+    private boolean[] seats;
+    private int totalSeats;
+
+    public OnlineReservationSystem(int totalSeats) {
+        this.totalSeats = totalSeats;
+        this.seats = new boolean[totalSeats];
+        for (int i = 0; i < totalSeats; i++) {
+            seats[i] = false; // Initialize all seats as unreserved
+        }
+    }
+
+    public void displayAvailableSeats() {
+        System.out.println("Available Seats: ");
+        for (int i = 0; i < totalSeats; i++) {
+            if (!seats[i]) {
+                System.out.print((i + 1) + " ");
+            } else {
+                System.out.print("X "); // 'X' represents a reserved seat
+            }
+        }
+        System.out.println();
+    }
+
+    public void reserveSeat(int seatNumber) {
+        if (seatNumber < 1 || seatNumber > totalSeats) {
+            System.out.println("Invalid seat number. Please choose a valid seat.");
+        } else if (seats[seatNumber - 1]) {
+            System.out.println("Seat " + seatNumber + " is already reserved. Please choose another seat.");
+        } else {
+            seats[seatNumber - 1] = true;
+            System.out.println("Seat " + seatNumber + " reserved successfully!");
+        }
+    }
+}
+
+public class ReservationProgram {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Online Reservation System!");
+
+        System.out.print("Enter the total number of seats in the theater: ");
+        int totalSeats = scanner.nextInt();
+
+        OnlineReservationSystem reservationSystem = new OnlineReservationSystem(totalSeats);
+
+        char choice;
+        do {
+            System.out.println("\n1. Display Available Seats");
+            System.out.println("2. Reserve a Seat");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice (1, 2, or 3): ");
+            int userChoice = scanner.nextInt();
+
+            switch (userChoice) {
+                case 1:
+                    reservationSystem.displayAvailableSeats();
+                    break;
+                case 2:
+                    System.out.print("Enter the seat number you want to reserve: ");
+                    int seatNumber = scanner.nextInt();
+                    reservationSystem.reserveSeat(seatNumber);
+                    break;
+                case 3:
+                    System.out.println("Thank you for using the Online Reservation System. Goodbye!");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+            }
+
+            System.out.print("Do you want to perform another operation? (y/n): ");
+            choice = scanner.next().charAt(0);
+        } while (choice == 'y');
+
+        scanner.close();
+    }
+}
